@@ -76,14 +76,14 @@ router.post('/:id', async (req,res) => {
     res.redirect('/')  
 })
 
-
 // like
 router.post('/:id', async (req,res)=>{
     // await article.counLike()
     try{
+        // Article.updateOne(
         Article.findByIdAndUpdate(
             req.params.id,
-            {$inc : {like: 1}}
+            { $inc : {like: 1}}
         )
         .exec((err)=>{
             if(err) console.log(err)
@@ -91,6 +91,7 @@ router.post('/:id', async (req,res)=>{
     } catch(e){
         console.log(e.message)
     }
+    
     res.redirect('/')
 
     // try{
@@ -104,6 +105,7 @@ router.post('/:id', async (req,res)=>{
     // } catch(e){
     //     console.log(e.message)
     // }
+    // res.redirect('/')
 
 
     // let counter = req.body.like;

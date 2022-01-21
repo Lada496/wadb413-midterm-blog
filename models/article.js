@@ -27,6 +27,7 @@ const articleSchema = new mongoose.Schema({
     }
 })
 
+
 articleSchema.methods.countLike = function() {
 
     let newCount = 0
