@@ -26,13 +26,12 @@ router.put('/:id', async (req,res) => {
     }
 })
 
-// get/show single page
+// get single page
 router.get('/:id', async (req,res) => {
     const article = await Article.findById(req.params.id)
     if(!article) res.redirect('/')
     res.render('articles/detail', { article: article })
 })
-
 // post a new article
 router.post('/', async (req,res) => {
     let article = new Article({
@@ -48,76 +47,79 @@ router.post('/', async (req,res) => {
         res.render('articles/newArticle', { article: article })
     }
 })
+
 // delete
 router.delete('/:id', async (req,res) => {
     await Article.findByIdAndDelete(req.params.id)
     res.redirect('/')
 })
 
-
-
-
-// get/show single page for comments
+// get a single page for comments
 router.get('/comment/:id', async (req,res) => {
     const article = await Article.findById(req.params.id)
     res.render('articles/newComment', { article: article })
 })
-
-// exports.postCart = async (req, res, next) => {
-//     const { productId } = req.body
-  
-//     const product = await getById(productId)
-//     await req.user.addToCart(product)
-  
-//     res.redirect('/cart')
-//   }
-
-
 // post a comment
-
 router.post('/:id', async (req,res) => {
-    // const comment = req.body.comment
-    // const article = await Article.findById(req.params.id)
-    // try{
-    //     await article.addComment(comment)
-    // } catch(e){
-    //     console.log(e.message)
-    // }
-    // res.redirect('/')
-
     const comment = {text:req.body.comment}
     try{
-        Article.findByIdAndUpdate(req.params.id,{
-            $push:{comment:comment}
-        },{
-            new:true
-        })
+        Article.findByIdAndUpdate(
+            req.params.id,
+            { $push:{comment:comment}},
+            {new:true})
         .exec((err)=>{
-            if(err) console.log(err)
-            res.redirect('/')  
+            if(err) console.log(err) 
         })
     } catch(e){
         console.log(e.message)
     }
-
-
-    
-    
-
-    // const comment = req.body.comment
-    // const article = await Article.findById(req.params.id)
-    // await article.updateOne(
-    //     req.body.id,
-    //     { $push: { comment: { $each: [ toString(comment) ] } } },
-    //     // { $push: { comment: comment}},
-    //     // { new: true },
-    //     (err => {
-    //         if(err) console.log(err)
-    //         res.redirect('/')  
-    //     })
-    // )
+    res.redirect('/')  
 })
 
 
+// like
+router.post('/:id', async (req,res)=>{
+    // await article.counLike()
+    try{
+        Article.findByIdAndUpdate(
+            req.params.id,
+            {$inc : {like: 1}}
+        )
+        .exec((err)=>{
+            if(err) console.log(err)
+        })
+    } catch(e){
+        console.log(e.message)
+    }
+    res.redirect('/')
+
+    // try{
+    //     Article.findOneAndUpdate(
+    //         req.params.id,
+    //         {$inc : {like: 1}}
+    //     )
+    //     .exec((err, data)=>{
+    //         if(err) console.log(err)
+    //     })
+    // } catch(e){
+    //     console.log(e.message)
+    // }
+
+
+    // let counter = req.body.like;
+    // try{
+    //     Article.findByIdAndUpdate(
+    //         req.params.id,
+    //         {$inc:{like:counter}},
+    //         {new:true})
+    //     .exec((err, data)=>{
+    //         if(err) console.log(err)
+            
+    //     })
+    // } catch(e){
+    //     console.log(e.message)
+    // }
+    // res.redirect('/')
+})
 
 module.exports = router
