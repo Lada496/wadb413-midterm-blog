@@ -15,19 +15,32 @@
                 
                 <a href="/articles/comment/<%= article.id %>" type="button" class="btn btn-primary">comment</a>
 
+
+
+                <!-- <ul>
+                    <% article.comment.forEach(function(comment) { %>
+                      <li>
+                        <%= comment.text %>
+                      </li>
+                    <% }); %> -->
+
+
+            <!-- 
                 <% article.comment.forEach(text => { %>   
                     <div class="card-body"><%= text["text"] %></div>
-                <% }) %>
+                <% }) %> -->
 
-                <div><%= article.like %></div>                
-
+                <div><%= article.like.length %></div>                
+                 
                 <form action="/articles/<%= article.id %>" method="POST">
                     <input hidden name="like" value="<%= article.like %>" />
 
                     <button type="submit" class="btn">
                         <i class="far fa-thumbs-up  fa-lg"></i> 
                     </button>
+
                 </form>
+
 
                 <a href="/" type="button" class="btn btn-info mt-4">All Articles</a>
             

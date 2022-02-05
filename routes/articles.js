@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const Article = require('../models/article')
 
+
 // get new article page
 router.get('/newArticle', (req,res) => {
     res.render('articles/newArticle', { article: new Article()})
@@ -59,69 +60,63 @@ router.get('/comment/:id', async (req,res) => {
     const article = await Article.findById(req.params.id)
     res.render('articles/newComment', { article: article })
 })
+
 // post a comment
-router.post('/:id', async (req,res) => {
-    const comment = {text:req.body.comment}
-    try{
-        Article.findByIdAndUpdate(
-            req.params.id,
-            { $push:{comment:comment}},
-            {new:true})
-        .exec((err)=>{
-            if(err) console.log(err) 
-        })
-    } catch(e){
-        console.log(e.message)
-    }
-    res.redirect('/')  
-})
+// router.post('/:id', async (req,res) => {
+//     const comment = {text:req.body.comment}
+//     try{
+//         Article.findByIdAndUpdate(
+//             req.params.id,
+//             { $push:{comment: [comment] }},
+//             {new:true})
+//         .exec((err)=>{
+//             if(err) console.log(err) 
+//         })
+//     } catch(e){
+//         console.log(e.message)
+//     }
+//     res.redirect(`/articles/${req.params.id}`)  
+// })
+
+// router.put('/:id', async (req,res) => {
+//     let comment = await Article.findOne({ comment:req.params.comment})
+//     comment.push(req.params.comment)
+//     const updatedComment = comment.save()
+//     res.redirect(`/articles/${req.params.id}`)
+// })
+
+
+// app.post("/index/:id", function (req, res) {
+//     TestData.findById(req.params.id, function (err, theUser) {
+//         if (err) {
+//             console.log(err);
+//         } else {
+//             theUser.likes += 1;
+//             theUser.save();
+//             console.log(theUser.likes);
+//             res.send({likeCount: theUser.likes}); //something like this...
+//         }
+
+
+// const doc = await Model.create({ nums: [3, 4] });
+// doc.nums.push(5); // Add 5 to the end of the array
+// await doc.save();
+
+
 
 // like
-router.post('/:id', async (req,res)=>{
-    // await article.counLike()
+router.post('/:id', async (req,res)=> {
+    const article = await Article.findById(req.params.id)
+    article.like.push(req.params.id)
+
     try{
-        // Article.updateOne(
-        Article.findByIdAndUpdate(
-            req.params.id,
-            { $inc : {like: 1}}
-        )
-        .exec((err)=>{
-            if(err) console.log(err)
-        })
-    } catch(e){
-        console.log(e.message)
-    }
-    
-    res.redirect('/')
-
-    // try{
-    //     Article.findOneAndUpdate(
-    //         req.params.id,
-    //         {$inc : {like: 1}}
-    //     )
-    //     .exec((err, data)=>{
-    //         if(err) console.log(err)
-    //     })
-    // } catch(e){
-    //     console.log(e.message)
-    // }
-    // res.redirect('/')
-
-
-    // let counter = req.body.like;
-    // try{
-    //     Article.findByIdAndUpdate(
-    //         req.params.id,
-    //         {$inc:{like:counter}},
-    //         {new:true})
-    //     .exec((err, data)=>{
-    //         if(err) console.log(err)
-            
-    //     })
-    // } catch(e){
-    //     console.log(e.message)
-    // }
-    // res.redirect('/')
+        await article.save()
+        res.redirect(`/articles/${article.id}`)
+    } catch(err) {
+        console.log(err)
+       
+    }  
 })
+
 
 module.exports = router

@@ -19,12 +19,15 @@ const articleSchema = new mongoose.Schema({
     },
     comment: [{
         text: String,
-        _id: false
+        // _id: false
     }],
-    like: {
-        type: Number,
-        default: 0
-    }
+    // like: {
+    //     type: Number,
+    //     default: 0
+    // }
+    like: [{
+        id: String
+    }]
 })
 
 
