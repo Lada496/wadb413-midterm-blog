@@ -1,20 +1,21 @@
 <%- include('../includes/head.ejs') %>
 
 <body>
-    <div class="p-3 mb-2 bg-primary text-white"></div>
+  <div class="p-3 mb-2 bg-primary text-white"></div>
 
-    <div class="container" style="width: 50%; margin: 0 auto;">
-        <h1>New Comment</h1>
+  <div class="container" style="width: 50%; margin: 0 auto">
+    <h1>New Comment</h1>
 
-        <form action="/articles/<%= article.id %>" method="POST">
-            <div class="mb-3">
-                <label for="comment" class="form-label">Comment</label>
-                <textarea name="comment" id="comment" class="form-control"><%= article.comment %></textarea>
-            </div>
-        
-            <a href="/" class="btn btn-secondary">Cancel</a>
-            <button type="submit" class="btn btn-success">Save</button>
-        </form>
-    </div>
+    <form action="/articles/<%= article.id %>" method="POST">
+      <div class="mb-3">
+        <label for="comment" class="form-label">Comment</label>
+        <textarea name="comment" id="comment" class="form-control"></textarea>
+      </div>
 
-<%- include('../includes/end.ejs') %>
+      <a href="/" class="btn btn-secondary">Cancel</a>
+      <button type="submit" class="btn btn-success">Save</button>
+    </form>
+  </div>
+
+  <%- include('../includes/end.ejs') %>
+</body>
