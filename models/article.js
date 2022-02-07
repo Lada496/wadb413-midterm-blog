@@ -1,47 +1,45 @@
-const mongoose = require('mongoose')
-
+const mongoose = require("mongoose");
 
 const articleSchema = new mongoose.Schema({
-    title: {
-        type: String,
-        required: true
+  title: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+  },
+  content: {
+    type: String,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  comment: [
+    {
+      type: String,
+      // _id: false
     },
-    description: {
-        type: String
+  ],
+  // like: {
+  //     type: Number,
+  //     default: 0
+  // }
+  like: [
+    {
+      type: String,
     },
-    content: {
-        type: String,
-        required: true
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    comment: [{
-        text: String,
-        // _id: false
-    }],
-    // like: {
-    //     type: Number,
-    //     default: 0
-    // }
-    like: [{
-        id: String
-    }]
-})
+  ],
+});
 
+articleSchema.methods.countLike = function () {
+  let newCount = 0;
+  newCount = +1;
 
-articleSchema.methods.countLike = function() {
-
-    let newCount = 0
-    newCount =+ 1
-
-    this.like = newCount
-    return this.save()
-}
-
-
-
+  this.like = newCount;
+  return this.save();
+};
 
 // articleSchema.methods.addComment = function(comment) {
 
@@ -50,12 +48,9 @@ articleSchema.methods.countLike = function() {
 //     console.log(updatedComment)
 
 //     updatedComment.push({comment: comment})
-    
+
 //     this.comment = updatedComment
 //     return this.save()
 // }
 
-
-
-
-module.exports = mongoose.model('Article', articleSchema)
+module.exports = mongoose.model("Article", articleSchema);
